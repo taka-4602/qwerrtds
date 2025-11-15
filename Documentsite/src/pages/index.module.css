@@ -1,0 +1,80 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* タブレット向け */
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 3rem 1rem;
+    min-height: 50vh;
+  }
+}
+
+/* モバイル向け */
+@media screen and (max-width: 768px) {
+  .heroBanner {
+    padding: 2rem 1rem;
+    min-height: 45vh;
+  }
+}
+
+/* 小さなモバイル向け */
+@media screen and (max-width: 480px) {
+  .heroBanner {
+    padding: 1.5rem 0.5rem;
+    min-height: 40vh;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* モバイルでのボタン配置調整 */
+@media screen and (max-width: 768px) {
+  .buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+  
+  .buttons a {
+    width: 90%;
+    max-width: 280px;
+    margin: 0 !important;
+    justify-self: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .buttons {
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .buttons a {
+    width: 100%;
+    max-width: 250px;
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+  }
+}

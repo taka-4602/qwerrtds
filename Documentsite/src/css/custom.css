@@ -1,0 +1,845 @@
+/**
+ * 荒サーバー用ダークテーマスタイル
+ * 黒をベースとした攻撃的でクールなデザイン
+ */
+
+/* ベースカラー設定 */
+:root {
+  /* Discord風ダークテーマ - ブラック＆ブルーパープル */
+  --ifm-color-primary: #5865f2;
+  --ifm-color-primary-dark: #4752c4;
+  --ifm-color-primary-darker: #404cb8;
+  --ifm-color-primary-darkest: #353f96;
+  --ifm-color-primary-light: #6975f4;
+  --ifm-color-primary-lighter: #7983f5;
+  --ifm-color-primary-lightest: #99a3f8;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(88, 101, 242, 0.1);
+  
+  /* Discord風カラーパレット */
+  --discord-blurple: #5865f2;
+  --discord-dark-blurple: #4752c4;
+  --discord-green: #57f287;
+  --discord-yellow: #fee75c;
+  --discord-fuchsia: #eb459e;
+  --discord-red: #ed4245;
+  --discord-white: #ffffff;
+  --discord-black: #000000;
+  
+  /* Discord背景色 */
+  --discord-dark: #2c2f33;
+  --discord-darker: #23272a;
+  --discord-darkest: #1e2124;
+  --discord-gray: #99aab5;
+  --discord-light-gray: #b9bbbe;
+  
+  /* ダークテーマの基本色を上書き */
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #0a0a0a;
+  --ifm-color-content: #e5e7eb;
+  --ifm-color-content-secondary: #9ca3af;
+  --ifm-navbar-background-color: #111111;
+  --ifm-footer-background-color: #0a0a0a;
+  
+  /* カスタムフォント設定 */
+  --ifm-font-family-base: 'SF Mono', Monaco, 'Inconsolata', 'Roboto Mono', 
+                          'Source Code Pro', monospace;
+}
+
+/* ダークテーマ設定 */
+[data-theme='dark'] {
+  --ifm-color-primary: #5865f2;
+  --ifm-color-primary-dark: #4752c4;
+  --ifm-color-primary-darker: #404cb8;
+  --ifm-color-primary-darkest: #353f96;
+  --ifm-color-primary-light: #6975f4;
+  --ifm-color-primary-lighter: #7983f5;
+  --ifm-color-primary-lightest: #99a3f8;
+  --docusaurus-highlighted-code-line-bg: rgba(88, 101, 242, 0.2);
+  
+  /* ダークテーマ用背景色 */
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #111111;
+}
+
+/* Discord風アニメーション効果 */
+@keyframes discordGlow {
+  0%, 100% { 
+    text-shadow: 0 0 5px var(--discord-blurple), 0 0 10px var(--discord-blurple);
+    opacity: 1;
+  }
+  50% { 
+    text-shadow: 0 0 10px var(--discord-blurple), 0 0 20px var(--discord-blurple), 0 0 30px var(--discord-blurple);
+    opacity: 0.8;
+  }
+}
+
+@keyframes terminalBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes slideFromLeft {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes blurplePulse {
+  0%, 100% { border-color: var(--discord-blurple); box-shadow: 0 0 5px rgba(88, 101, 242, 0.3); }
+  50% { border-color: var(--discord-dark-blurple); box-shadow: 0 0 15px rgba(71, 82, 196, 0.6); }
+}
+
+@keyframes triangleFlicker {
+  0%, 100% { 
+    color: var(--discord-blurple); 
+    text-shadow: 0 0 5px var(--discord-blurple);
+    transform: scale(1);
+  }
+  25% { 
+    color: var(--discord-yellow); 
+    text-shadow: 0 0 8px var(--discord-yellow);
+    transform: scale(1.1);
+  }
+  50% { 
+    color: var(--discord-green); 
+    text-shadow: 0 0 10px var(--discord-green);
+    transform: scale(1.2);
+  }
+  75% { 
+    color: var(--discord-fuchsia); 
+    text-shadow: 0 0 8px var(--discord-fuchsia);
+    transform: scale(1.1);
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-3px); }
+  60% { transform: translateY(-1px); }
+}
+
+@keyframes matrixRain {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes slideInLeft {
+  0% { 
+    transform: translateX(-100%); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideInRight {
+  0% { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+/* 基本ページ設定 */
+body {
+  background: #000000;
+  color: #e5e7eb;
+  font-family: 'SF Mono', Monaco, 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+}
+
+/* 全体にスムーズアニメーション適用 */
+* {
+  transition: all 0.2s ease;
+}
+
+/* ページ読み込み時のスライドインアニメーション */
+.main-wrapper {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+/* 攻撃的なヘッダータイトル */
+.hero__title {
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'SF Mono', monospace;
+  animation: discordGlow 3s ease-in-out infinite;
+  position: relative;
+  font-size: 3rem;
+}
+
+.hero__title::before {
+  content: '> ';
+  color: var(--discord-blurple);
+  font-weight: bold;
+  animation: triangleFlicker 2s ease-in-out infinite;
+}
+
+.hero__title::after {
+  content: '_';
+  color: var(--discord-blurple);
+  animation: terminalBlink 1s infinite;
+  margin-left: 5px;
+}
+
+/* ダークでクールなサブタイトル */
+.hero__subtitle {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  color: var(--discord-light-gray);
+  font-family: 'SF Mono', monospace;
+  text-transform: lowercase;
+}
+
+.hero__subtitle::before {
+  content: '# ';
+  color: var(--discord-yellow);
+}
+
+/* Discord風ボタンスタイル */
+.button {
+  background: linear-gradient(135deg, var(--discord-blurple), var(--discord-dark-blurple));
+  border: 2px solid var(--discord-blurple);
+  border-radius: var(--border-radius);
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'SF Mono', monospace;
+  transition: all var(--transition-medium) ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+  padding: var(--small-spacing) var(--base-spacing);
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(88, 101, 242, 0.2), transparent);
+  transition: left var(--transition-medium);
+}
+
+.button:hover::before {
+  left: 100%;
+}
+
+.button:hover {
+  background: var(--discord-dark-blurple);
+  box-shadow: 0 0 25px rgba(88, 101, 242, 0.7);
+  transform: translateY(-3px);
+  border-color: var(--discord-light);
+}
+
+.button--outline {
+  background: rgba(88, 101, 242, 0.1);
+  border: 2px solid var(--discord-blurple);
+  animation: blurplePulse 2s infinite;
+  backdrop-filter: blur(5px);
+}
+
+.button--outline:hover {
+  background: var(--discord-blurple);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
+}
+
+/* プライマリボタン（より目立つ） */
+.button--primary {
+  background: linear-gradient(135deg, var(--discord-blurple), var(--discord-dark-blurple)) !important;
+  border: 2px solid var(--discord-blurple) !important;
+  box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4) !important;
+}
+
+.button--primary:hover {
+  background: linear-gradient(135deg, var(--discord-dark-blurple), #353f96) !important;
+  box-shadow: 0 8px 30px rgba(88, 101, 242, 0.8) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* セカンダリボタン（少し控えめ） */
+.button--secondary {
+  background: linear-gradient(135deg, var(--discord-darker), var(--discord-dark)) !important;
+  border: 2px solid var(--discord-blurple) !important;
+  box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3) !important;
+}
+
+.button--secondary:hover {
+  background: linear-gradient(135deg, var(--discord-dark), var(--discord-blurple)) !important;
+  box-shadow: 0 6px 25px rgba(88, 101, 242, 0.6) !important;
+}
+
+/* ダークナビゲーションバー */
+.navbar {
+  background: rgba(0, 0, 0, 0.95);
+  border-bottom: 1px solid var(--discord-blurple);
+  box-shadow: 0 2px 10px rgba(88, 101, 242, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.navbar__brand:hover {
+  color: var(--discord-blurple) !important;
+  transition: color 0.3s ease;
+}
+
+.navbar__item .navbar__link {
+  color: #e5e7eb;
+  font-family: 'SF Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar__item .navbar__link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--discord-blurple);
+  transition: width 0.3s ease;
+}
+
+.navbar__item .navbar__link:hover {
+  color: var(--discord-blurple);
+  transform: translateY(-2px);
+}
+
+.navbar__item .navbar__link:hover::before {
+  width: 100%;
+}
+
+/* ヘッダー内のfaviconサイズ調整 */
+.navbar__logo img,
+.navbar__brand img,
+.navbar__logo svg,
+.navbar__brand svg {
+  width: 20px !important;
+  height: 20px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* ロゴコンテナの高さを固定し、要素を中央寄せ */
+.navbar__brand {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* navbarのロゴコンテナ調整 */
+.navbar__brand {
+  align-items: center;
+  display: flex;
+  margin-right: var(--base-spacing);
+}
+
+/* ロゴとタイトル間のスペース調整 */
+.navbar__brand .navbar__title {
+  margin-left: 8px;
+}
+
+/* ダークサイドバー */
+.theme-doc-sidebar-container {
+  background: #0a0a0a;
+  border-right: 1px solid var(--discord-darker);
+}
+
+.menu {
+  background: transparent;
+}
+
+.menu__link {
+  color: #9ca3af;
+  font-family: 'SF Mono', monospace;
+  transition: all var(--transition-medium) ease;
+  border-radius: var(--border-radius-small);
+  margin: 2px 0;
+  padding: var(--small-spacing) var(--base-spacing);
+}
+
+.menu__link:hover {
+  background: var(--discord-darker);
+  color: var(--discord-blurple);
+  transform: translateX(5px);
+  border-left: 3px solid var(--discord-blurple);
+  padding-left: 15px;
+}
+
+.menu__link--active {
+  background: var(--discord-darker);
+  color: var(--discord-blurple);
+  font-weight: bold;
+  border-left: 3px solid var(--discord-blurple);
+  animation: discordGlow 2s infinite;
+}
+
+.menu__list-item-collapsible:hover > .menu__link {
+  background: var(--discord-darker);
+}
+
+/* サイドバードロップダウン矢印アニメーション */
+.menu__caret {
+  transition: transform 0.3s ease, color 0.3s ease !important;
+}
+
+.menu__list-item-collapsible:hover .menu__caret {
+  color: var(--discord-blurple) !important;
+  animation: arrowBounce 0.6s ease-in-out;
+}
+
+.menu__list-item-collapsible--active .menu__caret {
+  color: var(--discord-blurple) !important;
+  transform: rotate(90deg);
+}
+
+/* ダークコンテンツエリア */
+.main-wrapper {
+  background: #000000;
+}
+
+.container {
+  background: transparent;
+}
+
+/* ハッカー風コードブロック */
+.prism-code {
+  background: #0a0a0a !important;
+  border: 1px solid var(--discord-darker);
+  border-radius: var(--border-radius-small);
+  font-family: 'SF Mono', monospace;
+  box-shadow: var(--box-shadow-medium);
+  padding: var(--base-spacing);
+}
+
+.token.comment {
+  color: var(--discord-light-gray) !important;
+}
+
+.token.string {
+  color: var(--discord-green) !important;
+}
+
+.token.keyword {
+  color: var(--discord-blurple) !important;
+}
+
+.token.function {
+  color: var(--discord-yellow) !important;
+}
+
+/* ダークアドモニション */
+.admonition {
+  border: 1px solid var(--discord-darker);
+  border-radius: var(--border-radius-small);
+  background: rgba(31, 41, 55, 0.3);
+  backdrop-filter: blur(5px);
+  padding: var(--base-spacing);
+  margin: var(--base-spacing) 0;
+}
+
+.admonition-heading {
+  font-family: 'SF Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.alert--danger {
+  border-color: var(--discord-red);
+  background: rgba(237, 66, 69, 0.1);
+}
+
+.alert--warning {
+  border-color: var(--discord-yellow);
+  background: rgba(254, 231, 92, 0.1);
+}
+
+.alert--info {
+  border-color: var(--discord-green);
+  background: rgba(87, 242, 135, 0.1);
+}
+
+/* ダークテーブル */
+table {
+  background: #0a0a0a;
+  border: 1px solid var(--discord-darker);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+th {
+  background: var(--discord-darker);
+  color: var(--discord-blurple);
+  font-family: 'SF Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--discord-blurple);
+}
+
+td {
+  border-bottom: 1px solid var(--discord-darker);
+}
+
+tr:hover {
+  background: rgba(31, 41, 55, 0.3);
+}
+
+/* ダークカード */
+.card {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid var(--discord-darker);
+  border-radius: var(--border-radius);
+  transition: all var(--transition-medium) ease;
+  backdrop-filter: blur(5px);
+  padding: var(--base-spacing);
+  margin-bottom: var(--base-spacing);
+}
+
+.card:hover {
+  border-color: var(--discord-blurple);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow-medium);
+}
+
+/* ダークフッター */
+.footer {
+  background: #0a0a0a;
+  border-top: 1px solid var(--discord-darker);
+  color: var(--discord-light-gray);
+}
+
+.footer__title {
+  color: var(--discord-blurple);
+  font-family: 'SF Mono', monospace;
+  text-transform: uppercase;
+}
+
+.footer__link-item {
+  color: var(--discord-light-gray);
+}
+
+.footer__link-item:hover {
+  color: var(--discord-blurple);
+}
+
+/* スクロールバーのカスタマイズ */
+::-webkit-scrollbar {
+  width: var(--small-spacing);
+  height: var(--small-spacing);
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--discord-darker);
+  border-radius: var(--border-radius-small);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--discord-blurple);
+}
+
+/* セレクション色 */
+::selection {
+  background: var(--discord-blurple);
+  color: #ffffff;
+}
+
+/* ダークテーマ強制適用 */
+html[data-theme='dark'] {
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #0a0a0a;
+}
+
+/* 検索ボックス */
+.DocSearch-Button {
+  background: var(--discord-darker) !important;
+  border: 1px solid var(--discord-blurple) !important;
+  color: #e5e7eb !important;
+}
+
+.DocSearch-Button:hover {
+  box-shadow: 0 0 10px rgba(88, 101, 242, 0.3) !important;
+}
+
+/* パンくずリスト */
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--discord-blurple);
+}
+
+.breadcrumbs__link {
+  font-family: 'SF Mono', monospace;
+  text-transform: lowercase;
+}
+
+/* TOC（目次） */
+.table-of-contents {
+  border-left: 2px solid var(--discord-darker);
+}
+
+.table-of-contents__link {
+  color: var(--discord-light-gray);
+  font-family: 'SF Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.table-of-contents__link--active {
+  color: var(--discord-blurple);
+  border-left: 2px solid var(--discord-blurple);
+  margin-left: -2px;
+  padding-left: 10px;
+}
+
+/* ドキュメントナビゲーション */
+.pagination-nav__link {
+  border: 1px solid var(--discord-darker);
+  background: rgba(10, 10, 10, 0.8);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--discord-blurple);
+  background: rgba(31, 41, 55, 0.3);
+}
+
+/* タグ */
+.tag {
+  background: var(--discord-darker);
+  color: #e5e7eb;
+  border: 1px solid var(--discord-blurple);
+  font-family: 'SF Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.tag:hover {
+  background: var(--discord-blurple);
+  color: #ffffff;
+}
+
+/* レスポンシブ画像設定 */
+img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 80vh; /* ビューポートの80%を超えないように制限 */
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+  margin: var(--base-spacing) auto; /* 中央配置と適切なマージン */
+  position: relative; /* 絶対配置を防ぐ */
+  z-index: 1; /* 適切なレイヤー順序 */
+}
+
+img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(88, 101, 242, 0.2);
+}
+
+/* Markdownコンテンツ内の画像追加制限 */
+.markdown img {
+  max-width: min(100%, 600px); /* 最大600pxまたは親要素の100% */
+  max-height: 60vh; /* ビューポートの60%まで */
+  object-fit: contain; /* アスペクト比を保持 */
+}
+
+/* 大きな画像やツール画像の特別制限 */
+img[src*="/img/tools/"],
+img[src*="image"] {
+  max-width: min(100%, 500px) !important;
+  max-height: 50vh !important;
+  overflow: hidden;
+  position: relative !important;
+}
+
+/* ドキュメント内の画像コンテナ */
+.theme-doc-markdown img {
+  max-width: 100%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: var(--base-spacing) 0;
+}
+
+/* faviconのサイズを制限（念のため） */
+img[src*="favicon.ico"],
+img[src*="logo.svg"] {
+  width: 16px !important; /* 標準的なサイズ */
+  height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  display: inline-block;
+  position: relative; /* 他の要素を覆わないようにする */
+  z-index: 1; /* レイヤー順序を適切に設定 */
+}
+
+/* ナビゲーションバー内のアイコン全般 */
+.navbar img {
+  max-width: 20px !important;
+  max-height: 20px !important;
+}
+
+/* レスポンシブ変数設定 */
+:root {
+  --base-spacing: 1rem;
+  --small-spacing: 0.5rem;
+  --large-spacing: 2rem;
+  --xl-spacing: 4rem;
+  --border-radius: 8px;
+  --border-radius-small: 4px;
+  --box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .navbar__item .navbar__link {
+    font-size: var(--font-size-sm);
+  }
+  
+  .container {
+    padding: 0 var(--base-spacing);
+  }
+  
+  .hero__subtitle {
+    font-size: var(--font-size-base);
+    margin: var(--small-spacing) 0;
+  }
+  
+  .button {
+    font-size: var(--font-size-sm);
+    padding: var(--small-spacing) var(--base-spacing);
+  }
+  
+  .card {
+    margin-bottom: var(--base-spacing);
+  }
+  
+  /* モバイル用画像調整 */
+  img {
+    margin: var(--small-spacing) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .hero__subtitle {
+    font-size: var(--font-size-sm);
+  }
+  
+  .buttons {
+    flex-direction: column;
+    gap: var(--small-spacing);
+  }
+  
+  .button {
+    width: 100%;
+    margin: var(--small-spacing) 0 !important;
+  }
+  
+  .navbar__item .navbar__link {
+    font-size: var(--font-size-xs);
+  }
+  
+  .menu__link {
+    padding: var(--small-spacing) var(--base-spacing);
+  }
+  
+  /* 小画面用画像最適化 */
+  img {
+    border-radius: var(--border-radius-small);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero__title {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .container {
+    padding: 0 var(--large-spacing);
+  }
+}
+
+@media (min-width: 1025px) {
+  .hero__title {
+    font-size: var(--font-size-5xl);
+  }
+  
+  .container {
+    max-width: 1200px;
+  }
+  
+  /* 大画面用画像エフェクト強化 */
+  img:hover {
+    transform: scale(1.05);
+    box-shadow: var(--box-shadow-heavy);
+  }
+}
+
+/* テーブルのレスポンシブ対応 */
+@media (max-width: 768px) {
+  table {
+    font-size: var(--font-size-sm);
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  th, td {
+    padding: var(--small-spacing);
+  }
+}
+
+/* コードブロックのレスポンシブ対応 */
+@media (max-width: 768px) {
+  .prism-code {
+    font-size: var(--font-size-xs);
+    padding: var(--small-spacing);
+    overflow-x: auto;
+  }
+}
+
+/* ナビゲーションのレスポンシブ改善 */
+@media (max-width: 996px) {
+  .navbar__inner {
+    padding: 0 var(--base-spacing);
+  }
+  
+  .navbar__brand {
+    margin-right: var(--base-spacing);
+  }
+}
