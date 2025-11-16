@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaction Spammer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #202225; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: #5865f2; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #7289da; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #2f3136, #1e1f22);
+      color: #fff;
+      margin: 0; padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #36393f;
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,.5);
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn .8s ease;
+      overflow: auto;
+      max-height: 95vh;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    h2 { color: #adb8ff; text-align: center; margin: 0 0 24px; font-weight: 600; }
+    label { display: block; margin-top: 18px; font-size: 14px; font-weight: 500; }
+
+    input[type="text"] {
+      width: 100%; padding: 10px; margin-top: 6px;
+      border-radius: 8px; border: 1px solid #202225;
+      background: #202225; color: #dcddde;
+      font-family: monospace;
+    }
+    input[type="number"] {
+      width: 100%; padding: 10px; margin-top: 6px;
+      border-radius: 8px; border: 1px solid #202225;
+      background: #202225; color: #fff;
+      font-family: monospace; -moz-appearance: textfield;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none; margin: 0;
+    }
+
+    .row { display: flex; gap: 16px; align-items: center; margin-top: 12px; }
+    .row > div { flex: 1; }
+
+    .checkbox-container {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      font-size: 14px; user-select: none; margin-top: 12px;
+    }
+    .checkbox-container input {
+      appearance: none; width: 36px; height: 18px; background: #4f545c;
+      border-radius: 18px; position: relative; transition: background .3s ease;
+    }
+    .checkbox-container:hover input { background: #5a5f68; }
+    .checkbox-container input::before {
+      content: ''; position: absolute; width: 14px; height: 14px;
+      border-radius: 50%; background: #fff; top: 2px; left: 2px;
+      transition: transform .3s cubic-bezier(.68,-.55,.27,1.55);
+    }
+    .checkbox-container input:checked { background: #7289da; }
+    .checkbox-container input:checked::before { transform: translateX(18px); }
+    .checkbox-container input:checked + span { color: #adb8ff; }
+
+    button {
+      padding: 10px 16px; border: none; border-radius: 8px;
+      color: #fff; font-weight: 600; font-size: 14px;
+      cursor: pointer; transition: all .3s;
+    }
+    button.primary {
+      margin-top: 24px; width: 100%; padding: 14px;
+      background: linear-gradient(135deg,#6d75ff,#5865f2);
+      font-size: 18px; box-shadow: 0 4px 15px rgba(88,101,242,.4);
+    }
+    button.primary:hover {
+      background: linear-gradient(135deg,#7d89ff,#4e57e0);
+      box-shadow: 0 6px 22px rgba(88,101,242,.6);
+      transform: translateY(-2px);
+    }
+    button.secondary {
+      background: #4f545c;
+    }
+    button.secondary:hover {
+      background: #5a5f68;
+    }
+    button.danger {
+        background: #e74c3c;
+    }
+    button.danger:hover {
+        background: #c0392b;
+    }
+    button:disabled {
+      cursor: not-allowed; background: #3e4147 !important; color: #9a9a9a;
+      transform: none; box-shadow: none;
+    }
+    .button-group {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    #channelListContainer {
+      margin-top: 12px; padding: 10px; max-height: 250px;
+      overflow-y: auto; background: #202225; border-radius: 8px;
+      border: 1px solid #2f3136;
+    }
+    .channel-category {
+      padding: 4px 8px; color: #96989d; font-size: 12px;
+      font-weight: 600; text-transform: uppercase; margin-top: 10px;
+    }
+    .channel-category:first-child { margin-top: 0; }
+    .channel-item {
+      display: block; padding: 6px 8px 6px 18px;
+      border-radius: 5px; transition: background-color .2s;
+    }
+    .channel-item.disabled { opacity: 0.5; cursor: not-allowed; }
+    .channel-item:not(.disabled):hover { background-color: #36393f; }
+    .channel-item label { margin-top: 0; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;}
+    .channel-item input[type="checkbox"] { accent-color: #7289da; }
+    .channel-item span { color: #96989d; }
+    .channel-item label span { color: #dcddde; }
+
+    #log { margin-top: 20px; padding: 10px; height: 150px; overflow-y: auto; background: #202225; border-radius: 10px; font-family: monospace; font-size: 12px; white-space: pre-wrap; resize: vertical;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Reaction Spammer</h2>
+    <form id="form">
+      <label for="token">トークン</label>
+      <input type="text" id="token" required placeholder="MTM1ODc4MTE3NTIzMzI1MzU*****">
+
+      <label for="guildId">サーバーID</label>
+      <input type="text" id="guildId" required placeholder="123456789012345678">
+      
+      <button type="button" id="fetchChannelsBtn" class="secondary" style="margin-top: 12px; width: 100%;">チャンネルリスト取得</button>
+
+      <div id="channelListContainer" style="display: none;"></div>
+      
+      <hr style="border-color: #4f545c; margin: 24px 0;">
+
+
+      <label>リアクション設定</label>
+      <label class="checkbox-container">
+        <input type="checkbox" id="useExternalEmojis">
+        <span>Nitro 絵文字</span>
+      </label>
+      
+      <label class="checkbox-container">
+        <input type="checkbox" id="reverseOrder">
+        <span>古いメッセージからリアクションする</span>
+      </label>
+
+      <div>
+        <label for="messageLimit">メッセージ数</label>
+        <input type="number" id="messageLimit" min="1" max="100" value="10">
+      </div>
+
+      <button id="submitBtn" type="submit" class="primary" disabled>リアクション開始</button>
+      <div class="button-group">
+        <button id="stopBtn" type="button" class="danger" disabled>停止</button>
+      </div>
+    </form>
+
+    <div id="log"></div>
+  </div>
+
+<script>
+const tokenInput = document.getElementById('token');
+const guildIdInput = document.getElementById('guildId');
+const fetchChannelsBtn = document.getElementById('fetchChannelsBtn');
+const channelListContainer = document.getElementById('channelListContainer');
+const useExternalEmojisCheckbox = document.getElementById('useExternalEmojis');
+const reverseOrderCheckbox = document.getElementById('reverseOrder'); // v4.2で追加
+const messageLimitInput = document.getElementById('messageLimit');
+const form = document.getElementById('form');
+const submitBtn = document.getElementById('submitBtn');
+const stopBtn = document.getElementById('stopBtn');
+const logEl = document.getElementById('log');
+
+const x_super_properties = "eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiQ2hyb21lIiwiZGV2aWNlIjoiIiwic3lzdGVtX2xvY2FsZSI6ImphLUFQIiwiaGFzX2NsaWVudF9tb2RzIjpmYWxzZSwiYnJvd3Nlcl91c2VyX2FnZW50IjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyNi4wLjAuMCBTYWZhcmkvNTM3LjM2IiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTI2LjAuMC4wIiwib3NfdmVyc2lvbiI6IjEwIiwicmVmZXJyZXIiOiJodHRwczovL2Rpc2NvcmQuY29tL2NoYW5uZWxzL0BtZSIsInJlZmVycmluZ19kb21haW5fY3VycmVudCI6IiIsInJlbGVhc2VfY2hhbm5lbCI6InN0YWJsZSIsImNsaWVudF9idWlsZF9udW1iZXIiOjk5OTk5OSwiY2xpZW50X2V2ZW50X3NvdXJjZSI6bnVsbH0=";
+
+let shouldStop = false;
+
+const NORMAL_EMOJIS = ["📕", "🇴", "🇿", "🇪", "🇺", "⚠️", "😹", "😾", "😽"];
+const EXTERNAL_EMOJIS = [
+	"_20250503_0:1393766450229022791",
+	"removebgpreview:1393766077674160128",
+	"removebgpreview:1393766115766964365",
+	"removebgpreview:1393766155889541140",
+	"removebgpreview:1393766199564832871",
+	"removebgpreview:1393766251456762032",
+	"removebgpreview:1393766300156694638",
+	"g__1_removebgpreview:1398352656824795269",
+	"g__2_removebgpreview:1398352687333900359",
+	"megamoji__1_removebgpreview:1398352289391054930",
+	"o__1_removebgpreview:1398351863035986020",
+	"z__1_removebgpreview:1398351967738269716",
+	"e__1_removebgpreview:1398351995550568679",
+	"u__1_removebgpreview:1398352236232310925"
+];
+const NITRO_GUILD_ID = '1363182059278831797';
+
+
+function appendLog(text) {
+  const time = new Date().toLocaleTimeString('ja-JP');
+  logEl.textContent += `\n[${time}] ${text}`;
+  logEl.scrollTop = logEl.scrollHeight;
+}
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function setControlsState(isExecuting) {
+    submitBtn.disabled = isExecuting;
+    stopBtn.disabled = !isExecuting;
+    tokenInput.disabled = isExecuting;
+    guildIdInput.disabled = isExecuting;
+    fetchChannelsBtn.disabled = isExecuting;
+}
+
+
+async function fetchChannels() {
+  const token = tokenInput.value.trim();
+  const guildId = guildIdInput.value.trim();
+  if (!token || !guildId) {
+    appendLog("⚠️ トークンとサーバーIDを入力してください。");
+    return;
+  }
+  appendLog("⏳ チャンネルリストを取得中...");
+  fetchChannelsBtn.disabled = true;
+  try {
+    const response = await fetch(`https://discord.com/api/v9/guilds/${guildId}/channels`, {
+      headers: { 'Authorization': token, 'x-super-properties': x_super_properties },
+      referrerPolicy: "no-referrer"
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`[${response.status}] ${errorData.message || '取得に失敗しました'}`);
+    }
+    const channels = (await response.json()).sort((a, b) => a.position - b.position);
+    channelListContainer.innerHTML = '';
+    channels.filter(ch => !ch.parent_id && ch.type !== 4).forEach(channel => {
+        channelListContainer.appendChild(createChannelElement(channel));
+    });
+    const categories = channels.filter(ch => ch.type === 4);
+    categories.forEach(category => {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'channel-category';
+        categoryDiv.textContent = category.name;
+        channelListContainer.appendChild(categoryDiv);
+        const channelsInCategory = channels.filter(ch => ch.parent_id === category.id);
+        channelsInCategory.forEach(channel => {
+            channelListContainer.appendChild(createChannelElement(channel));
+        });
+    });
+    channelListContainer.style.display = 'block';
+    submitBtn.disabled = false;
+    appendLog(`✅ ${channels.length}件のチャンネルを読み込みました。`);
+  } catch (error) {
+    appendLog(`❌ チャンネル取得エラー: ${error.message}`);
+  } finally {
+    fetchChannelsBtn.disabled = false;
+  }
+}
+
+function createChannelElement(channel) {
+    const item = document.createElement('div');
+    const isSelectable = channel.type === 0 || channel.type === 5;
+    const prefix = channel.type === 2 ? '🔊' : (isSelectable ? '#' : '📁');
+    item.className = `channel-item ${isSelectable ? '' : 'disabled'}`;
+    if (isSelectable) {
+        item.innerHTML = `<label><input type="checkbox" value="${channel.id}"><span>${channel.name}</span></label>`;
+    } else {
+        item.innerHTML = `<label><span>${prefix} ${channel.name}</span></label>`;
+    }
+    return item;
+}
+
+async function checkGuildMembership(token, requiredGuildId) {
+    appendLog(`🔎 Nitro絵文字使用のためサーバー参加状況を確認中...`);
+    try {
+        const response = await fetch('https://discord.com/api/v9/users/@me/guilds', {
+            headers: { 'Authorization': token, 'x-super-properties': x_super_properties },
+            referrerPolicy: "no-referrer"
+        });
+        if (!response.ok) {
+            appendLog('❌ サーバーリストの取得に失敗しました。');
+            return false;
+        }
+        const guilds = await response.json();
+        const isMember = guilds.some(guild => guild.id === requiredGuildId);
+        if (isMember) {
+            //appendLog('✅ 参加が確認できました。');
+            return true;
+        } else {
+            appendLog(`🚫 指定サーバー(ID: ${requiredGuildId})に参加していません。`);
+            return false;
+        }
+    } catch (error) {
+        appendLog(`❌ サーバー参加確認中にエラー: ${error.message}`);
+        return false;
+    }
+}
+
+
+async function addReaction(token, channelId, messageId, emoji) {
+  const isExternal = useExternalEmojisCheckbox.checked;
+  const encodedEmoji = isExternal ? emoji.trim() : encodeURIComponent(emoji.trim());
+  try {
+    const response = await fetch(`https://discord.com/api/v9/channels/${channelId}/messages/${messageId}/reactions/${encodedEmoji}/@me`, {
+      method: 'PUT',
+      headers: { 'Authorization': token, 'x-super-properties': x_super_properties },
+      referrerPolicy: "no-referrer"
+    });
+    if (response.ok) {
+      return true;
+    } else if (response.status === 429) {
+        const errorData = await response.json();
+        const retryAfter = (errorData.retry_after || 1) * 1000;
+        appendLog(`⏳ レート制限。${(retryAfter / 1000).toFixed(2)}秒待機します...`);
+        await sleep(retryAfter);
+        return addReaction(token, channelId, messageId, emoji);
+    } else {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMsg = errorData.message || '不明なエラー';
+        if (response.status === 403) {
+             appendLog(`🚫 リアクション不可 [${response.status}]: ${errorMsg} (絵文字: ${emoji})`);
+        } else {
+             appendLog(`❌ リアクション失敗 [${response.status}]: ${errorMsg} (絵文字: ${emoji})`);
+        }
+        return false;
+    }
+  } catch (error) {
+    appendLog(`❌ ネットワークエラー: ${error.message}`);
+    return false;
+  }
+}
+
+async function startReactionSpam() {
+  shouldStop = false;
+  setControlsState(true);
+  const token = tokenInput.value.trim();
+  const selectedChannelElements = Array.from(channelListContainer.querySelectorAll('input[type="checkbox"]:checked'));
+  const useExternal = useExternalEmojisCheckbox.checked;
+  const reverseOrder = reverseOrderCheckbox.checked; // v4.2で追加
+  const emojis = useExternal ? EXTERNAL_EMOJIS : NORMAL_EMOJIS;
+  const messageLimit = parseInt(messageLimitInput.value);
+
+  if (!token || selectedChannelElements.length === 0) {
+    appendLog("⚠️ トークンと対象チャンネルを正しく設定してください。");
+    setControlsState(false);
+    return;
+  }
+  
+  if (useExternal) {
+      const isMember = await checkGuildMembership(token, NITRO_GUILD_ID);
+      if (!isMember) {
+          //appendLog("🛑 処理を中止します。");
+          setControlsState(false);
+          return;
+      }
+  }
+  
+  appendLog(`🚀 リアクションスパムを開始します。(順序: ${reverseOrder ? '古い順' : '新しい順'})`);
+  for (const channelEl of selectedChannelElements) {
+    if (shouldStop) break;
+    const channelId = channelEl.value;
+    const channelName = channelEl.closest('label').querySelector('span').textContent;
+    appendLog(`▶️ チャンネル [#${channelName}] の処理を開始...`);
+    try {
+      const messagesResponse = await fetch(`https://discord.com/api/v9/channels/${channelId}/messages?limit=${messageLimit}`, {
+        headers: { 'Authorization': token, 'x-super-properties': x_super_properties },
+        referrerPolicy: "no-referrer"
+      });
+      if (!messagesResponse.ok) {
+        if (messagesResponse.status === 403) {
+            appendLog(`🚫 アクセス不可 [#${channelName}] スキップします。`);
+        } else {
+            const errorData = await messagesResponse.json().catch(() => ({}));
+            appendLog(`❌ メッセージ取得失敗 [#${channelName}, Status: ${messagesResponse.status}]: ${errorData.message || ''} スキップします。`);
+        }
+        continue;
+      }
+      const messages = await messagesResponse.json();
+      appendLog(`💬 ${messages.length}件のメッセージを取得しました。`);
+      
+      const processedMessages = reverseOrder ? messages.reverse() : messages;
+
+      for (const message of processedMessages) { 
+        if (shouldStop) break;
+        for (const emoji of emojis) {
+          if (shouldStop) break;
+          appendLog(`... ${message.id} に ${useExternal ? `<:${emoji}>` : emoji} を付与中`);
+          const success = await addReaction(token, channelId, message.id, emoji);
+          if (success) {
+            appendLog(`✅ リアクション成功`);
+          }
+        }
+      }
+    } catch (error) {
+      appendLog(`❌ 予期せぬエラー: ${error.message}`);
+    }
+  }
+  if (shouldStop) {
+    appendLog("🛑 停止されました。");
+  } else {
+    appendLog("🎉 全ての処理が完了しました。");
+  }
+  setControlsState(false);
+}
+
+fetchChannelsBtn.addEventListener('click', fetchChannels);
+form.addEventListener('submit', (e) => { e.preventDefault(); startReactionSpam(); });
+stopBtn.addEventListener('click', () => { shouldStop = true; });
+
+setControlsState(false);
+submitBtn.disabled = true;
+
+</script>
+</body>
+</html>

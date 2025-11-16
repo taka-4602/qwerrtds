@@ -1,5 +1,17 @@
 # Cloudflare Pages redirects for SPA routing
 
+# Tools routing - redirect to individual tool folders
+/raider /tools/raider/index.html 200
+/joiner /tools/joiner/index.html 200
+/dm-spammer /tools/dm-spammer/index.html 200
+/group-dm-spammer /tools/group-dm-spammer/index.html 200
+/invite-braker /tools/invite-braker/index.html 200
+/reaction-spammer /tools/reaction-spammer/index.html 200
+/slash-command-auto /tools/slash-command-auto/index.html 200
+/status-setter /tools/status-setter/index.html 200
+/token-checker /tools/token-checker/index.html 200
+/webhook-spammer /tools/webhook-spammer/index.html 200
+
 # Help redirect to Docusaurus main page
 /help /index.html 200
 /help/* /index.html 200
