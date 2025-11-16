@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects for SPA routing
+
+# Help redirect to Docusaurus main page
+/help /index.html 200
+/help/* /index.html 200
+
+# Main site routing
+/ /index.html 200
+/* /:splat 200

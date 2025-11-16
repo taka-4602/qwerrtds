@@ -14,12 +14,14 @@ pnpm-debug.log*
 
 # Build / 出力
 dist/
-build/
 out/
 .cache/
 .cache-loader/
 .parcel-cache/
 coverage/
+
+# ローカルビルドディレクトリのみ無視（デプロイ用build/は追跡する）
+Documentsite/build/
 
 # Cloudflare (Wrangler / Pages)
 # wrangler のローカル状態やシークレットなどを含むディレクトリは追跡しない
