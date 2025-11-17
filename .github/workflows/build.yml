@@ -11,8 +11,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: "build"
-  cancel-in-progress: false
+  # Group builds by workflow and branch, cancel in-progress runs on new pushes
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
