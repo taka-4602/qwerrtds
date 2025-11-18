@@ -8,9 +8,6 @@ title: "Slash Command Auto"
 ## 概要
 Slash Command Autoは、Discordサーバー内のスラッシュコマンドを自動検索・取得し、大量実行できるツールです。ボットが提供するスラッシュコマンドを悪用してサーバーに負荷をかけたり、コマンドスパムを実行したりできます。
 
-## アクセス
-ツールURL: https://lookjbn.github.io/ozeu-slash-command-auto/
-![スクショ](/img/tools/image-4.png)
 ## 基本設定
 
 ### 1. Discord設定

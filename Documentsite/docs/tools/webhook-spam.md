@@ -8,9 +8,6 @@ title: "Webhook Spam"
 ## 概要
 Webhook Spamは、Discordサーバー内にWebhookを作成し、大量のメッセージを自動送信するツールです。通常のメッセージ送信とは異なり、Webhookを使用することでレート制限を回避しながら効率的な荒らしを実行できます。
 
-## アクセス
-ツールURL: https://lookjbn.github.io/ozeu-webhook-spam/
-
 ## UI構成と使い方
 
 ### 基本設定

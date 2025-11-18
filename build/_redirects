@@ -12,10 +12,9 @@
 /token-checker /tools/token-checker/index.html 200
 /webhook-spammer /tools/webhook-spammer/index.html 200
 
-# Help redirect to Docusaurus main page
-/help /index.html 200
-/help/* /index.html 200
+# Docusaurus documentation access
+/docs /docs.html 200
+/docs/* /docs/:splat 200
 
-# Main site routing
-/ /index.html 200
-/* /:splat 200
+# Default: root shows tools portal (index.html)
+# No need for explicit redirect since index.html is served by default

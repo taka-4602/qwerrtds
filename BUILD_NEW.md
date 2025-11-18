@@ -14,8 +14,8 @@
 
 ```
 build/
-├── index.html              # ツールポータル（OZEU）- ルートページ
-├── docs.html               # Docusaurusメインページ
+├── index.html              # Docusaurusメインページ
+├── landing.html            # オリジナルツールポータル（OZEU）
 ├── _redirects              # Cloudflare Pagesルーティング設定
 ├── docs/                   # ドキュメント（Docusaurus）
 ├── tools/                  # 個別ツール
@@ -54,11 +54,11 @@ build
 
 ## 📋 サイトマップ（デプロイ後）
 
-- `yourdomain.pages.dev/` - **ツールポータル（OZEU）**
-- `yourdomain.pages.dev/docs` - Docusaurusドキュメントサイト
+- `yourdomain.pages.dev/` - Docusaurusメインサイト（ドキュメント）
+- `yourdomain.pages.dev/landing` - オリジナルツールポータル（OZEU）
 - `yourdomain.pages.dev/raider` - Raiderツール
 - `yourdomain.pages.dev/joiner` - Joinerツール
-- `yourdomain.pages.dev/docs/*` - ドキュメント各ページ
+- `yourdomain.pages.dev/docs/` - ドキュメント各ページ
 - その他のツール...
 
 ## 🔧 手動ビルド手順
@@ -85,9 +85,9 @@ build
    cp -r raider joiner dm-spammer group-dm-spammer invite-braker reaction-spammer slash-command-auto status-setter token-checker webhook-spammer build/tools/
    ```
 
-4. **ツールポータルとリダイレクトを設定**
+4. **ランディングページとリダイレクトを設定**
    ```bash
-   cp index.html build/index.html
+   cp index.html build/landing.html
    cp _redirects build/
    ```
 
