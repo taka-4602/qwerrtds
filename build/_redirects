@@ -12,9 +12,14 @@
 /token-checker /tools/token-checker/index.html 200
 /webhook-spammer /tools/webhook-spammer/index.html 200
 
-# Docusaurus documentation access
-/docs /docs.html 200
+# Landing page redirect (the original OZEU portal)
+/landing /landing.html 200
+
+# Help and docs stay on main Docusaurus site (root)
+/help /index.html 200
+/help/* /:splat 200
 /docs/* /docs/:splat 200
 
-# Default: root shows tools portal (index.html)
-# No need for explicit redirect since index.html is served by default
+# Main site routing (Docusaurus at root)
+/ /index.html 200
+/* /:splat 200
