@@ -5,9 +5,16 @@ title: "Token Checker"
 
 # Token Checkerの使い方
 
+:::info ツール一覧
+すべてのツールをまとめて確認: **[OZEU ツール一覧サイト](https://tools.ozeu.net/)**
+:::
+
 ## 概要
 Token Checkerは、Discordトークンの有効性を一括で確認できるツールです。大量のトークンを効率的に検証し、有効なもののみを抽出して他のツールで活用できます。無効化されたトークンを除外することで、荒らし作業の効率を大幅に向上させます。
 
+## アクセス
+ツールURL: https://lookjbn.github.io/token-checker/
+![スクショ](/img/tools/image-5.png)
 ## UI構成と使い方
 
 ### トークン入力エリア

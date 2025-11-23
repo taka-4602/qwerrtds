@@ -4,9 +4,12 @@ title: "Reaction Spam"
 ---
 
 # Reaction Spamの使い方
-
+![スクショ](/img/tools/image-2.png)
 ## 概要
 Reaction Spamは、指定されたチャンネルの複数のメッセージに対して大量のリアクションを実行するツールです。サーバー内のメッセージに絵文字リアクションを一斉に付与し、通知を大量発生させることができます。
+
+## アクセス
+ツールURL: https://lookjbn.github.io/ozeu-reaction-spammer
 
 ## 基本設定
 

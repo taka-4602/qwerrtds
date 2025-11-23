@@ -1,122 +1,10 @@
-# OZEU プロジェクト ビルドガイド
+# ビルド手順
 
-## 🚀 クイックビルド
+## ドキュメントサイトの更新とビルド
 
-最も簡単な方法：
+このプロジェクトは Docusaurus ベースのドキュメントサイトと各種ツール群から構成されています。
 
-```bash
-./build.sh
-```
-
-これで統合ビルドが完了し、`build/`ディレクトリにデプロイ可能なファイルが生成されます。
-
-## 📁 ビルド後の構造
-
-```
-build/
-├── index.html              # ツールポータル（OZEU）- ルートページ
-├── docs.html               # Docusaurusメインページ
-├── _redirects              # Cloudflare Pagesルーティング設定
-├── docs/                   # ドキュメント（Docusaurus）
-├── tools/                  # 個別ツール
-│   ├── raider/
-│   ├── joiner/
-│   ├── dm-spammer/
-│   └── ...
-└── assets/                 # 静的アセット
-```
-
-## 🌐 ローカルテスト
-
-ビルド後にローカルでテスト：
-
-```bash
-cd build
-python3 -m http.server 3000
-```
-
-ブラウザで `http://localhost:3000/` を開いてテスト。
-
-## ☁️ Cloudflare Pages デプロイ設定
-
-**Build command:**
-```bash
-./build.sh
-```
-
-**Build output directory:**
-```
-build
-```
-
-**Environment variables:** (必要な場合)
-- Node.js version: 18以上推奨
-
-## 📋 サイトマップ（デプロイ後）
-
-- `yourdomain.pages.dev/` - **ツールポータル（OZEU）**
-- `yourdomain.pages.dev/docs` - Docusaurusドキュメントサイト
-- `yourdomain.pages.dev/raider` - Raiderツール
-- `yourdomain.pages.dev/joiner` - Joinerツール
-- `yourdomain.pages.dev/docs/*` - ドキュメント各ページ
-- その他のツール...
-
-## 🔧 手動ビルド手順
-
-自動スクリプトが使用できない場合：
-
-1. **Docusaurusサイトをビルド**
-   ```bash
-   cd Documentsite
-   npm install
-   npm run build
-   cd ..
-   ```
-
-2. **ビルドディレクトリを準備**
-   ```bash
-   rm -rf build
-   cp -r Documentsite/build .
-   mkdir -p build/tools
-   ```
-
-3. **ツールをコピー**
-   ```bash
-   cp -r raider joiner dm-spammer group-dm-spammer invite-braker reaction-spammer slash-command-auto status-setter token-checker webhook-spammer build/tools/
-   ```
-
-4. **ツールポータルとリダイレクトを設定**
-   ```bash
-   cp index.html build/index.html
-   cp _redirects build/
-   ```
-
-## ⚠️ よくある問題と解決方法
-
-### "Your Docusaurus site did not load properly" エラー
-
-**原因:** `baseUrl`設定が間違っている
-**解決:** `Documentsite/docusaurus.config.ts`で`baseUrl: '/'`が設定されていることを確認
-
-### リンクが機能しない
-
-**原因:** `_redirects`ファイルが正しく配置されていない
-**解決:** `build/_redirects`ファイルが存在することを確認
-
-### ツールページが404エラー
-
-**原因:** ツールディレクトリが正しくコピーされていない
-**解決:** `build/tools/`以下に各ツールディレクトリが存在することを確認
-
-## 🛠️ 開発時の注意事項
-
-- Docusaurusの設定変更後は必ず再ビルドが必要
-- 新しいツールを追加した場合は`build.sh`を更新
-- `_redirects`ファイルを変更した場合は再デプロイが必要
-
-## 📚 従来のビルド手順（参考用）
-
-### ローカル開発・編集
+### 1. ローカル開発・編集
 
 ```bash
 # Documentsite フォルダで作業
@@ -130,8 +18,75 @@ npm start
 # → http://localhost:3000 でプレビュー可能
 ```
 
-### ドキュメント編集
+### 2. ドキュメント編集
 
 - `Documentsite/docs/` 配下の `.md` ファイルを編集
 - `Documentsite/docusaurus.config.ts` でサイト設定を変更
 - `Documentsite/sidebars.ts` でサイドバー構成を変更
+
+### 3. 本番用ビルド実行
+
+```bash
+# プロジェクトルートで実行
+cd /Users/hiro/Documents/qwerrtds
+
+# 1. Documentsite をビルド
+cd Documentsite && npm ci && npm run build
+
+# 2. トップレベル build ディレクトリに統合
+cd .. && rm -rf build && mkdir -p build
+cp -r Documentsite/build/* build/
+
+# 3. 各ツールを build/tools にコピー
+mkdir -p build/tools
+cp raider/* build/tools/ 
+cp dm-spammer/* build/tools/ 
+cp group-dm-spammer/* build/tools/ 
+cp invite-braker/* build/tools/ 
+cp joiner/* build/tools/ 
+cp reaction-spammer/* build/tools/ 
+cp slash-command-auto/* build/tools/ 
+cp status-setter/* build/tools/ 
+cp token-checker/* build/tools/ 
+cp webhook-spammer/* build/tools/
+
+# 4. 設定ファイルをコピー
+cp config.json build/ 2>/dev/null || true
+cp _redirects build/ 2>/dev/null || true
+```
+
+### 4. Git コミット・デプロイ
+
+```bash
+# 変更をコミット
+git add .
+git commit -m "Update documentation and tools"
+git push origin main
+```
+
+### 5. Cloudflare Pages 設定
+
+- **Build command**: 空白（手動ビルド済み）
+- **Output directory**: `build`
+- **Environment variables**: 必要に応じて API キーなどを設定
+
+## 自動化スクリプト（オプション）
+
+package.json に以下を追加すると `npm run build` で一括実行可能:
+
+```json
+{
+  "scripts": {
+    "build:docs": "cd Documentsite && npm ci && npm run build",
+    "build:copy": "rm -rf build && mkdir -p build && cp -r Documentsite/build/* build/ && mkdir -p build/tools && cp raider/* build/tools/ && cp dm-spammer/* build/tools/ && cp group-dm-spammer/* build/tools/ && cp invite-braker/* build/tools/ && cp joiner/* build/tools/ && cp reaction-spammer/* build/tools/ && cp slash-command-auto/* build/tools/ && cp status-setter/* build/tools/ && cp token-checker/* build/tools/ && cp webhook-spammer/* build/tools/ && cp config.json build/ && cp _redirects build/",
+    "build": "npm run build:docs && npm run build:copy"
+  }
+}
+```
+
+## 注意事項
+
+- `build/` ディレクトリは Git で追跡されます（Cloudflare Pages デプロイ用）
+- `Documentsite/build/` は `.gitignore` で除外されています
+- 機密情報（API キー・トークン）はリポジトリに含めず、Cloudflare Pages の環境変数で設定してください
+- `/help` パスは自動的に `/index.html`（Docusaurus メインページ）にリダイレクトされます

@@ -5,6 +5,8 @@ title: "Set Status"
 
 # Set Statusの使い方
 
+ツールURL: https://lookjbn.github.io/discord-status/
+
 ## 概要
 Set Statusは、Discordアカウントのプレゼンス状態（ステータス）を自由に設定できるツールです。通常のDiscordクライアントでは設定できない詳細なカスタムステータスや、Spotify画像を使用した特殊なステータス表示が可能です。
 

@@ -9,14 +9,14 @@ const config: Config = {
   tagline: 'ツールの使い方をわかりやすく説明',
   favicon: 'img/favicon.ico',
 
-  // Production deployment configuration
+  // GitHub Pagesのサブパス配信に対応
   url: 'https://tools.ozeu.net', // メインドメイン
-  baseUrl: '/',                  // ルートパスで配信（Cloudflare Pages用）
+  baseUrl: '/help/',             // /help/ サブパスで配信
 
   organizationName: 'hirorogo',
   projectName: 'ozeu',
 
-  onBrokenLinks: 'warn',          // 壊れたリンクがあっても警告のみでビルド続行
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -63,15 +63,15 @@ const config: Config = {
       {name: 'twitter:card', content: 'summary_large_image'},
       {name: 'twitter:title', content: 'OZEU '},
       {name: 'twitter:description', content: 'おぜうの集い荒兵器公式Document！'},
-      // 共有時の絶対URLをルートパスに修正
-      {name: 'twitter:image', content: 'https://tools.ozeu.net/img/ozeu-social-card.png'},
+      // 共有時の絶対URLもサブパスに対応
+      {name: 'twitter:image', content: 'https://tools.ozeu.net/help/img/ozeu-social-card.png'},
       {property: 'og:type', content: 'website'},
       {property: 'og:title', content: 'OZEU  - Discord荒らし'},
       {property: 'og:description', content: 'おぜうの集い荒兵器公式Document！'},
-      {property: 'og:image', content: 'https://tools.ozeu.net/img/ozeu-social-card.png'},
+      {property: 'og:image', content: 'https://tools.ozeu.net/help/img/ozeu-social-card.png'},
       {property: 'og:image:width', content: '1200'},
       {property: 'og:image:height', content: '630'},
-      {property: 'og:url', content: 'https://tools.ozeu.net/'},
+      {property: 'og:url', content: 'https://tools.ozeu.net/help/'},
       {property: 'og:locale', content: 'ja_JP'},
       {property: 'og:site_name', content: 'OZEU Document'},
     ],
@@ -90,12 +90,6 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'ツールガイド',
-        },
-        // ドキュメントサイトへのリンク（/docsでアクセス可能）
-        {
-          href: '/docs',
-          position: 'left',
-          label: 'ドキュメント',
         },
         {
           // GitHubリンク

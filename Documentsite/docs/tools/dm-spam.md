@@ -5,8 +5,15 @@ title: "DM Spam"
 
 # DM Spamの使い方
 
+:::info ツール一覧
+すべてのツールをまとめて確認: **[OZEU ツール一覧サイト](https://tools.ozeu.net/)**
+:::
+
 ## 概要
 DM Spamは、[トークン](../getting-started/token-guide.md)を使用して複数のユーザーに同時にプライベートメッセージを送信するツールです。効率的なメッセージ配信により、大規模な通知や連絡が可能です。
+
+## アクセス
+ツールURL: https://lookjbn.github.io/ozeu-dm-spam
 
 ## 事前準備
 
