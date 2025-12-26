@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OZEU Web Tool Portal</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-gradient-1: #1a0b2e;
+            --bg-gradient-2: #16213e;
+            --card-bg: rgba(30, 30, 45, 0.6);
+            --card-border: rgba(100, 200, 255, 0.3);
+            --text-color: #e8e8f0;
+            --title-color: #ffffff;
+            --accent-1: #00d4ff;
+            --accent-2: #7c3aed;
+            --glow-color: rgba(0, 212, 255, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-dark) 50%, var(--bg-gradient-2) 100%);
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, var(--accent-1) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(100px, -100px) scale(1.2); opacity: 0.5; }
+            50% { transform: translate(-50px, -200px) scale(0.8); opacity: 0.2; }
+            75% { transform: translate(-150px, -100px) scale(1.1); opacity: 0.4; }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(100, 200, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 200, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 80px var(--glow-color);
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .help-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            background: rgba(124, 58, 237, 0.2);
+            border: 2px solid var(--accent-2);
+            border-radius: 50px;
+            color: var(--title-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .help-button:hover {
+            background: rgba(124, 58, 237, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.6);
+        }
+
+        .help-icon {
+            font-size: 1.2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .server-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            background: rgba(88, 101, 242, 0.2);
+            border: 2px solid #5865f2;
+            border-radius: 50px;
+            color: var(--title-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.3);
+        }
+
+        .server-button:hover {
+            background: rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(88, 101, 242, 0.6);
+        }
+
+        .server-icon {
+            font-size: 1.2rem;
+        }
+
+        /* ツールグリッド */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tool-card {
+            position: relative;
+            display: block;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--text-color);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-1);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px var(--glow-color);
+        }
+
+        .tool-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .tool-card h2 {
+            font-size: 1.5rem;
+            color: var(--title-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .tool-card p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 255, 100, 0.2);
+            border: 1px solid rgba(0, 255, 100, 0.5);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #00ff64;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .status-badge.inactive {
+            background: rgba(117, 117, 117, 0.2);
+            border: 1px solid rgba(99, 74, 74, 0.5);
+            color: #9b6e6e;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tool-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+            border-radius: 5px;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(100, 200, 255, 0.1);
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .ai-credit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size:2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .ai-credit a {
+            color: var(--accent-1);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .ai-credit a:hover {
+            color: var(--accent-2);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="particle" style="width: 300px; height: 300px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 200px; height: 200px; top: 60%; left: 70%; animation-delay: -5s;"></div>
+        <div class="particle" style="width: 250px; height: 250px; top: 40%; left: 80%; animation-delay: -10s;"></div>
+        <div class="particle" style="width: 180px; height: 180px; top: 80%; left: 20%; animation-delay: -15s;"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <header>
+            <h1>OZEU WEB TOOLS</h1>
+            <p class="subtitle">OZEUのDiscord用Webアプリケーション</p>
+            <div class="button-group">
+                <a href="https://help.ozeu.net" class="help-button">
+                    <span class="help-icon">❓</span>
+                    ヘルプ &amp; ドキュメント
+                </a>
+                <a href="https://discord.gg/acvr" class="server-button" target="_blank">
+                    <span class="server-icon">🔗</span>
+                    サポートサーバー
+                </a>
+            </div>
+        </header>
+
+        <div class="tool-grid">            <a href="/raider" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">⚡</div>
+                    <h2>raider</h2>
+                    <p>大量のアカウントでスパムして、テキストチャンネルを機能不全にさせます。</p>
+                </div>
+            </a>
+
+            <a href="/joiner" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">🚪</div>
+                    <h2>joiner</h2>
+                    <p>大量のアカウントのサーバー参加を自動化します。24captchaAPIにも対応済み。</p>
+                </div>
+            </a>
+
+            <a href="/slash-command-auto" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">⌨️</div>
+                    <h2>slash-command-auto</h2>
+                    <p>ボタン型スパムExternal Appのコマンド実行 / ボタン押下を自動化します。Discordボット側のドキュメントはhelpに記載しています。</p>
+                </div>
+            </a>
+
+            <a href="/token-checker" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">🔐</div>
+                    <h2>token-checker</h2>
+                    <p>トークンを入力してアカウントの有効性をチェックします。</p>
+                </div>
+            </a>
+
+            <a href="/webhook-spammer" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">🌐</div>
+                    <h2>webhook-spammer</h2>
+                    <p>Webhook作成権限があるサーバーで大量にWebhookを作成し、メッセージをスパムします。</p>
+                </div>
+            </a>            <a href="/invite-braker" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">🔗</div>
+                    <h2>invite-braker</h2>
+                    <p>実行したサーバーで、上限が来るまで招待を発行します。</p>
+                </div>
+            </a>
+
+            <a href="/group-dm-spammer" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">👥</div>
+                    <h2>group-dm-spammer</h2>
+                    <p>フレンドになったターゲットとのグループDMを大量に作成してメッセージをスパムします。</p>
+                </div>
+            </a>
+
+            <a href="/reaction-spammer" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">😊</div>
+                    <h2>reaction-spammer</h2>
+                    <p>指定したチャンネルのメッセージにリアクションを大量につけるスパムを実行します。</p>
+                </div>
+            </a>
+
+            <a href="/status-setter" class="tool-card">
+                <span class="status-badge">ACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">📜</div>
+                    <h2>status-setter</h2>
+                    <p>Discord RPCモドキを設定できます。Spotifyのジャケット画像も表示可能です。</p>
+                </div>
+            </a>
+
+            <a href="/dm-spammer" class="tool-card">
+                <span class="status-badge inactive">INACTIVE</span>
+                <div class="tool-card-content">
+                    <div class="tool-icon">💬</div>
+                    <h2>dm-spammer</h2>
+                    <p>指定したサーバーのメンバーのDMに宣伝メッセージを送るけど、hCaptchaが出るので実用的ではありません。</p>
+                </div>
+            </a>
+        </div>
+
+        <footer>
+            <div class="ai-credit">
+                <span>All HTML/CSS generated by AI </span><span class="heart-icon">❤️</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
